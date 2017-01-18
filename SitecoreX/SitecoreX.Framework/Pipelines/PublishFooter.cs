@@ -31,11 +31,12 @@ namespace SitecoreX.Framework.Pipelines
             try
             {
                 Sitecore.Diagnostics.Log.Info("footer content", footer.Fields);
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
+               
                 ContentAssetParam paramObj = new ContentAssetParam();
                 paramObj.c_body = new Dictionary<string, string>();
                 paramObj.c_body["default"] = footer.Fields["FooterText"].Value.ToString();
+                string paramString = Newtonsoft.Json.JsonConvert.SerializeObject(paramObj);
+                Sitecore.Diagnostics.Log.Info("DW parameters:" + paramString, this);
 
                 foreach (var itemLanguage in footer.Languages)
                 {
@@ -49,12 +50,14 @@ namespace SitecoreX.Framework.Pipelines
                 dynamic oauthResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(GetToken());
                 string token = oauthResponse.access_token.ToString();
                 Sitecore.Diagnostics.Log.Info("DW OAuth token: " + token, this);
+
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("https://sapient3.evaluation.dw.demandware.net");
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                string paramString = Newtonsoft.Json.JsonConvert.SerializeObject(paramObj);
-                Sitecore.Diagnostics.Log.Info("DW parameters:" + paramString, this);
+             
                 System.Net.Http.HttpContent content = new StringContent(paramString, UTF8Encoding.UTF8, "application/json");
                 HttpResponseMessage messge = client.PutAsync("/s/-/dw/data/v17_1/libraries/SiteGenesisSharedLibrary/content/footer-copy-test", content).Result;
                 string description = messge.Content.ReadAsStringAsync().Result;
