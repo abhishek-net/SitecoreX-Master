@@ -1,5 +1,6 @@
 ﻿using Sitecore.Data.Items;
 using Sitecore.Jobs;
+using SitecoreX.Framework.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,6 @@ namespace SitecoreX.Framework.Pipelines
 {
     class PublishFooter
     {
-        class ContentAssetParam
-        {
-            public dynamic c_body { get; set; }
-
-        }
         public void OnPublishEnd(object sender, EventArgs args)
         {
             #region Publish custom message
@@ -31,7 +27,7 @@ namespace SitecoreX.Framework.Pipelines
             try
             {
                 Sitecore.Diagnostics.Log.Info("footer content", footer.Fields);
-               
+
                 ContentAssetParam paramObj = new ContentAssetParam();
                 paramObj.c_body = new Dictionary<string, string>();
                 paramObj.c_body["default"] = footer.Fields["FooterText"].Value.ToString();
@@ -57,7 +53,7 @@ namespace SitecoreX.Framework.Pipelines
                 client.BaseAddress = new Uri("https://sapient3.evaluation.dw.demandware.net");
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-             
+
                 System.Net.Http.HttpContent content = new StringContent(paramString, UTF8Encoding.UTF8, "application/json");
                 HttpResponseMessage messge = client.PutAsync("/s/-/dw/data/v17_1/libraries/SiteGenesisSharedLibrary/content/footer-copy-test", content).Result;
                 string description = messge.Content.ReadAsStringAsync().Result;
