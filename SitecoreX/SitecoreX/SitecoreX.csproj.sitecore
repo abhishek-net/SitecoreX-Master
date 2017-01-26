@@ -2,4 +2,8 @@
   <PropertyGroup>
     <Site Server="www.sitecore8revision2.com" UserName="sitecore\admin" IsRemoteSitecore="False" />
   </PropertyGroup>
+  <File Include="Views\Shared\AccountLayout.cshtml" FileTimestamp="0" FileSize="0" ServerTimestamp="0" ServerFileSize="0" />
+  <File Include="/Views/Shared/AccountLayout.cshtml" FileTimestamp="0" FileSize="0" ServerTimestamp="0" ServerFileSize="0">
+    <Item DatabaseName="master">{7477FDBC-B6E7-4ADA-BE18-04F0F1F24622}</Item>
+  </File>
 </Project>

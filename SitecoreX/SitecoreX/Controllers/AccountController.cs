@@ -9,6 +9,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SitecoreX.Models;
+using Sitecore;
+using System.Web.Security;
+using System.Web.Routing;
+using System.Collections.Generic;
+using SitecoreX.Framework.Helper;
 
 namespace SitecoreX.Controllers
 {
@@ -17,12 +22,14 @@ namespace SitecoreX.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private const string Domain = "extranet";
 
         public AccountController()
         {
+
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +41,9 @@ namespace SitecoreX.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -57,8 +64,10 @@ namespace SitecoreX.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            Sitecore.Context.Database.GetItem("/sitecore/content/Account/Register");
+            ViewBag.RegisterLink = Sitecore.Links.LinkManager.GetItemUrl(Sitecore.Context.Database.GetItem("/sitecore/content/Account/Register"));
+            ViewBag.ReturnUrl = Framework.Helper.UrlHelper.HomeUrl; //returnUrl;
+            return View("Login");
         }
 
         //
@@ -66,29 +75,35 @@ namespace SitecoreX.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
+                var username = string.Format(@"{0}\{1}", Domain, model.Email);
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                try
+                {
+                    if (Sitecore.Security.Authentication.AuthenticationManager.Login(username, model.Password))
+                    {
+                        Redirect(Framework.Helper.UrlHelper.HomeUrl);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid login details.");
+                        return View("Login", model);
+
+                    }
+                }
+                catch (System.Security.Authentication.AuthenticationException exception)
+                {
+                    Sitecore.Diagnostics.Log.Error("Error while performing user login: " + exception, this);
+                    return View("Login");
+                }
             }
+            else
+                return View("Login");
+
+            return null;
         }
 
         //
@@ -120,7 +135,7 @@ namespace SitecoreX.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -147,28 +162,32 @@ namespace SitecoreX.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                try
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string userName = string.Format(@"{0}\{1}", Domain, model.Email);
+                    if (!Sitecore.Security.Accounts.User.Exists(userName))
+                    {
+                        Membership.CreateUser(userName, model.Password, model.Email);
 
-                    return RedirectToAction("Index", "Home");
+                        if (Sitecore.Security.Authentication.AuthenticationManager.Login(userName, model.Password))
+                        {
+                            Sitecore.Security.Accounts.User user = Sitecore.Security.Accounts.User.FromName(userName, true);
+                            Sitecore.Security.UserProfile userProfile = user.Profile;
+                            userProfile.FullName = string.Format("{0} {1}", model.FirstName, model.LastName);
+                            userProfile.Save();
+                            Redirect(Framework.Helper.UrlHelper.HomeUrl);
+                        }
+                    }
                 }
-                AddErrors(result);
+                catch (Exception ex)
+                {
+                    Sitecore.Diagnostics.Log.Error(ex.InnerException.Message, this);
+                }
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -391,8 +410,8 @@ namespace SitecoreX.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            Sitecore.Context.Logout();
+            return Redirect("/Home");
         }
 
         //

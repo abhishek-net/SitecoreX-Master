@@ -1,6 +1,10 @@
 ﻿@using SitecoreX.Models
+@using Sitecore
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
 @model LoginViewModel
 @{
+    Layout = null;
     ViewBag.Title = "Log in";
 }
 
@@ -42,7 +46,8 @@
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink("Register as a new user", "Register")
+                    <a href="@ViewBag.RegisterLink">Register</a>
+                    
                 </p>
                 @* Enable this once you have account confirmation enabled for password reset functionality
                     <p>
@@ -58,6 +63,8 @@
     </div>
 </div>
 
-@section Scripts {
+@*@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
+}*@
+
+<script src="~/Scripts/jquery.validate.min.js"></script>

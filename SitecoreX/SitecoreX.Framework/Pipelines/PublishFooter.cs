@@ -27,12 +27,12 @@ namespace SitecoreX.Framework.Pipelines
             try
             {
                 Sitecore.Diagnostics.Log.Info("footer content", footer.Fields);
-
+                
                 ContentAssetParam paramObj = new ContentAssetParam();
                 paramObj.c_body = new Dictionary<string, string>();
                 paramObj.c_body["default"] = footer.Fields["FooterText"].Value.ToString();
-                string paramString = Newtonsoft.Json.JsonConvert.SerializeObject(paramObj);
-                Sitecore.Diagnostics.Log.Info("DW parameters:" + paramString, this);
+                
+              
 
                 foreach (var itemLanguage in footer.Languages)
                 {
@@ -42,7 +42,8 @@ namespace SitecoreX.Framework.Pipelines
                         paramObj.c_body[itemLanguage.ToString()] = item.Fields["FooterText"].Value.ToString();
                     }
                 }
-
+                string paramString = Newtonsoft.Json.JsonConvert.SerializeObject(paramObj);
+                Sitecore.Diagnostics.Log.Info("DW parameters:" + paramString, this);
                 dynamic oauthResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(GetToken());
                 string token = oauthResponse.access_token.ToString();
                 Sitecore.Diagnostics.Log.Info("DW OAuth token: " + token, this);

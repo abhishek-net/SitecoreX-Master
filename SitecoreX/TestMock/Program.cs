@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Web.Security;
 
 namespace TestMock
 {
@@ -23,7 +24,7 @@ namespace TestMock
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
                 dwParam obj = new dwParam();
-                obj.c_body = new Dictionary<string,string>();
+                obj.c_body = new Dictionary<string, string>();
                 obj.c_body["default"] = "Hi I am default";
                 obj.c_body["fr-FR"] = "<div class=\"test\">Hi I am france footer</div>";
                 obj.c_body["fr-CA"] = "Hi I am france canada footer";
@@ -53,6 +54,28 @@ namespace TestMock
                 Console.WriteLine(ex);
                 Console.ReadKey();
             }
+        }
+        static bool CreateUser()
+        {
+            try
+            {
+                var userName = string.Format(@"{0}\aka{1}@yopmail.com", "extranet", DateTime.Now.Ticks.ToString());
+                if (!Sitecore.Security.Accounts.User.Exists(userName))
+                {
+                    Membership.CreateUser(userName, "123456");
+                    var _user = Sitecore.Security.Accounts.UserManager.GetUsers().Where(x => x.Profile.Email == userName).SingleOrDefault();
+                    // Edit the profile information
+                    //Sitecore.Security.Accounts.User user = Sitecore.Security.Accounts.User.FromName(string.Format(@"{0}\{1}", this.Domain, model.Email), true);
+                    Sitecore.Security.UserProfile userProfile = _user.Profile;
+                    userProfile.FullName = string.Format("{0} {1}", "Abhishek", "Mishra");
+                }
+            }
+            catch (Exception ex)
+            {
+                Sitecore.Diagnostics.Log.Error(ex.InnerException.Message, "TestMock");
+                return false;
+            }
+            return true;
         }
         static string GetToken()
         {

@@ -49,8 +49,7 @@ namespace SitecoreX.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Display(Name = "User Name")]
         public string Email { get; set; }
 
         [Required]
@@ -64,6 +63,16 @@ namespace SitecoreX.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [DataType(DataType.Text, ErrorMessage = "First name is required")]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text, ErrorMessage = "First name is required")]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

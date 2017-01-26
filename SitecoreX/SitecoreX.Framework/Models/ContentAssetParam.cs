@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SitecoreX.Framework.Models
 {
-    class ContentAssetParam
+    public class ContentAssetParam
     {
         public dynamic c_body { get; set; }
     }
