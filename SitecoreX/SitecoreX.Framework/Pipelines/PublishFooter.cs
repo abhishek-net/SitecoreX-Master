@@ -31,9 +31,7 @@ namespace SitecoreX.Framework.Pipelines
                 ContentAssetParam paramObj = new ContentAssetParam();
                 paramObj.c_body = new Dictionary<string, string>();
                 paramObj.c_body["default"] = footer.Fields["FooterText"].Value.ToString();
-                
-              
-
+                              
                 foreach (var itemLanguage in footer.Languages)
                 {
                     var item = footer.Database.GetItem(footer.ID, itemLanguage);
