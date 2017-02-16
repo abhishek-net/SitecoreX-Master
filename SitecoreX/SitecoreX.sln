@@ -21,15 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connector", "Connector\Conn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connector.Framework", "Connector.Framework\Connector.Framework.csproj", "{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibrary", "ExternalLibrary", "{8D914093-9835-404C-94B8-85E98882A3C9}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\..\..\Inetpub\wwwroot\Sitecore8Revision2\Website\bin\Sitecore.Commerce.dll = ..\..\..\..\..\..\Inetpub\wwwroot\Sitecore8Revision2\Website\bin\Sitecore.Commerce.dll
-		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Kernel.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Kernel.dll
-		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.Client.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.Client.dll
-		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.dll
-		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Mvc.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Mvc.dll
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

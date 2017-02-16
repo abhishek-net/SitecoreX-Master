@@ -242,6 +242,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
+    <Content Include="Library\Sitecore.Commerce.dll" />
     <Content Include="Library\Sitecore.Kernel.dll" />
     <Content Include="Library\Sitecore.Logging.Client.dll" />
     <Content Include="Library\Sitecore.Logging.dll" />
