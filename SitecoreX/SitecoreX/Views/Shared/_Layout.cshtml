@@ -51,5 +51,39 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/respond.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            debugger;
+            $.ajax({
+                type: 'POST',
+                url: 'https://sapient3.evaluation.dw.demandware.net/s/SiteGenesis/dw/shop/v16_1/customers/auth?pretty_print=true&client_id=5a40714c-52c3-44df-a00d-9d3bb2dc8ea8',
+                contentType: 'application/json',
+                data: JSON.stringify({ 'type': 'guest' }),
+                success: function (data) {
+                    debugger;                   
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://sapient3.evaluation.dw.demandware.net/s/SiteGenesis/dw/shop/v16_1/baskets',
+                            contentType : 'application/json',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader("Authorization", "Bearer ")
+                            },
+
+                            success: function(data) {
+                                console.log(data);
+                            },
+                            error: function(xhr, status, error) {
+
+                            }
+                        });
+
+                    console.log(data);
+                },
+                error: function (xhr, status, error) {
+
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -9,6 +9,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreX.Framework", "Site
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMock", "TestMock\TestMock.csproj", "{1DAF5A53-EA76-447E-A068-A6E655CF1712}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreConcepts", "CoreConcepts", "{3578003F-8E5B-4E76-9A23-CA72AE62547C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.AuthorizationServer.Core", "OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj", "{8C5F356F-D0D3-4CE8-BAAE-F3DC7BD8F1FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.AuthorizationServer.API", "OAuth.AuthorizationServer.API\OAuth.AuthorizationServer.API.csproj", "{6D364210-4F82-45A0-B160-54FD7FBE8F59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commerce", "Commerce", "{D5BD3A5F-156F-40C2-B6BC-B51281173886}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connector", "Connector\Connector.csproj", "{E30C95B7-50E0-41BB-9BD3-EA0FFECC594F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connector.Framework", "Connector.Framework\Connector.Framework.csproj", "{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibrary", "ExternalLibrary", "{8D914093-9835-404C-94B8-85E98882A3C9}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\Inetpub\wwwroot\Sitecore8Revision2\Website\bin\Sitecore.Commerce.dll = ..\..\..\..\..\..\Inetpub\wwwroot\Sitecore8Revision2\Website\bin\Sitecore.Commerce.dll
+		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Kernel.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Kernel.dll
+		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.Client.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.Client.dll
+		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Logging.dll
+		..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Mvc.dll = ..\..\Sitecore\SitecoreX\SitecoreX\Library\Sitecore.Mvc.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +48,30 @@ Global
 		{1DAF5A53-EA76-447E-A068-A6E655CF1712}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DAF5A53-EA76-447E-A068-A6E655CF1712}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DAF5A53-EA76-447E-A068-A6E655CF1712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C5F356F-D0D3-4CE8-BAAE-F3DC7BD8F1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C5F356F-D0D3-4CE8-BAAE-F3DC7BD8F1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C5F356F-D0D3-4CE8-BAAE-F3DC7BD8F1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C5F356F-D0D3-4CE8-BAAE-F3DC7BD8F1FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D364210-4F82-45A0-B160-54FD7FBE8F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D364210-4F82-45A0-B160-54FD7FBE8F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D364210-4F82-45A0-B160-54FD7FBE8F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D364210-4F82-45A0-B160-54FD7FBE8F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E30C95B7-50E0-41BB-9BD3-EA0FFECC594F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E30C95B7-50E0-41BB-9BD3-EA0FFECC594F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E30C95B7-50E0-41BB-9BD3-EA0FFECC594F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E30C95B7-50E0-41BB-9BD3-EA0FFECC594F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C5F356F-D0D3-4CE8-BAAE-F3DC7BD8F1FC} = {3578003F-8E5B-4E76-9A23-CA72AE62547C}
+		{6D364210-4F82-45A0-B160-54FD7FBE8F59} = {3578003F-8E5B-4E76-9A23-CA72AE62547C}
+		{E30C95B7-50E0-41BB-9BD3-EA0FFECC594F} = {D5BD3A5F-156F-40C2-B6BC-B51281173886}
+		{BB6D5FD4-4F15-4F1E-8042-0C4114334F4B} = {D5BD3A5F-156F-40C2-B6BC-B51281173886}
 	EndGlobalSection
 EndGlobal
